@@ -16,7 +16,7 @@
 - Gradle
 - Docker
 
-###> H2 database configuration
+### H2 database configuration
 
 Приложение использует базу данных H2 In Memory, а консоль находится по адресу http://localhost:8080/transactions-app/h2-console.
 URL-адрес jdbc должен быть следующим: jdbc:h2:mem:transaction-system.
@@ -60,8 +60,29 @@ docker run -d -p 127.0.0.1:8080:8080 --name spring-boot-transactions spring-boot
 ```
 ## OpenAPI описание
 1. Откройте адрес в браузере http://localhost:8080/transactions-app/swagger-ui
-2. Попробовать отправить запросы из Swagger-UI.
+2. Ознакомтесь с endpoint'ами и схемами запросов.
+3. Попробовать отправить запросы из Swagger-UI.
 * Поле id при post запросе игнорируются, т.к генерируются на стороне сервера.
+
+#### Пример curl-запроса
+```shell script
+curl -X 'POST' \
+'http://localhost:8080/transactions-app/api/v1/services/declarative/transfer' \
+-H 'accept: */*' \
+-H 'Content-Type: application/json' \
+-d '{
+"fromId": 1,
+"toId": 2,
+"amount": 100
+}'
+```
+#### Endpoints
+![Image Alt](src/main/resources/images/endpoints.png)
+
+#### Схемы данных
+![Image Alt](src/main/resources/images/schemas.png)
+
+
 
 ## Todo:
 - Написать голую реализацию перевода через транзакцию на JDBC.
