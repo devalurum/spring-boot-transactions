@@ -1,0 +1,47 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /transactions-app
+
+spring:
+  application:
+    name: transactions-app
+  datasource:
+    url: jdbc:h2:mem:transaction-system
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  h2:
+    console.path: /h2-console
+    console.settings.trace: false
+    console.settings.web-allow-others: true
+    console.enabled: true
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files: data.sql
+          auto: create-drop
+        format_sql: true
+        generate_statistics: false
+  sql.init.mode: never
+
+logging:
+  level:
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /rest-api-docs
+  swagger-ui:
+    path: /swagger-ui

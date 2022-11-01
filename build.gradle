@@ -1,0 +1,109 @@
+plugins {
+    id 'io.spring.dependency-management' version "1.0.12.RELEASE"
+    id 'org.springframework.boot' version '2.7.2'
+    id 'java'
+    id 'idea'
+    id 'com.google.cloud.tools.jib' version '3.3.0'
+}
+
+//apply from: 'jib.gradle'
+
+idea {
+    project {
+        languageLevel = JavaVersion.VERSION_11
+    }
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.devalurum'
+version = '0.0.1'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+ext {
+    javaxValidVersion = "2.0.1.Final"
+    javaxPersistenceVersion = "2.2"
+    gsonVersion = "2.10"
+    lombokMapstructBindingVersion = "0.2.0";
+    mapstructVersion = "1.5.0.RC1"
+    lombokVersion = "1.18.24"
+    hibernateVersion = "5.5.5.Final"
+    hibernateTypesVersion = "2.4.3"
+    openApiVersion = "1.6.8"
+    apacheCommonsLang3Version = "3.12.0"
+    jaxbApiVersion = "2.3.0"
+    junitVersion = "4.13.2"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    implementation "org.springdoc:springdoc-openapi-webmvc-core:$openApiVersion"
+    implementation "org.springdoc:springdoc-openapi-ui:$openApiVersion"
+    implementation "org.springdoc:springdoc-openapi-data-rest:$openApiVersion"
+
+    implementation "org.mapstruct:mapstruct:$mapstructVersion",
+            "org.projectlombok:lombok:$lombokVersion",
+            "org.projectlombok:lombok-mapstruct-binding:$lombokMapstructBindingVersion"
+
+    implementation "com.h2database:h2"
+    implementation "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}",
+            "org.projectlombok:lombok:$lombokVersion",
+            "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "com.google.code.gson:gson:${gsonVersion}"
+    testImplementation "com.h2database:h2"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+}
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+tasks.named("bootJar") {
+    mainClass = 'org.devalurum.transactionsapp.TransactionsApplication'
+    archiveName = "$baseName.$extension"
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+            '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+task managedVersions {
+    doLast {
+        dependencyManagement.managedVersions.each {
+            println it
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
