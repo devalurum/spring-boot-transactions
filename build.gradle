@@ -40,6 +40,7 @@ ext {
     apacheCommonsLang3Version = "3.12.0"
     jaxbApiVersion = "2.3.0"
     junitVersion = "4.13.2"
+    log4jdbcVersion = "2.0.0"
 }
 
 dependencies {
@@ -49,6 +50,8 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
+
+    implementation "com.integralblue:log4jdbc-spring-boot-starter:${log4jdbcVersion}"
 
     implementation "org.springdoc:springdoc-openapi-webmvc-core:$openApiVersion"
     implementation "org.springdoc:springdoc-openapi-ui:$openApiVersion"

@@ -23,14 +23,14 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+    show-sql: false
     generate-ddl: true
     properties:
       hibernate:
         hbm2ddl:
           import_files: data.sql
           auto: create-drop
-        format_sql: true
+        format_sql: false
         generate_statistics: false
   sql.init.mode: never
 
@@ -38,6 +38,21 @@ logging:
   level:
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
+    jdbc:
+      sqlonly: DEBUG
+
+log4jdbc:
+  drivers: org.h2.Driver
+  auto:
+    load:
+      popular:
+        drivers: false
+  dump:
+    sql:
+      select: true
+      update: true
+      insert: true
+
 
 springdoc:
   api-docs:
