@@ -15,6 +15,7 @@
 - H2 database
 - Gradle
 - Docker
+- Log4JDBC
 
 ### H2 database configuration
 
